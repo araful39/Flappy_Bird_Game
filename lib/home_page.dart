@@ -10,12 +10,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double birdYaxis=-1;
+ static double birdYaxis=0;
+  double time=0;
+  double height=0;
+  double initialHeight=birdYaxis;
+  bool gameHasStarted=false;
   void jump(){
-    Timer.periodic(Duration(milliseconds: 500), (timer) {
+setState(() {
+time=0;
+initialHeight=birdYaxis;
+});
+
+  }
+  void startGame(){
+    gameHasStarted=true;
+    Timer.periodic(Duration(milliseconds: 50), (timer) {
+      time +=0.04;
+      height =-4.9 * time*time + 2.8 * time;
       setState(() {
-        birdYaxis +=0.1;
+        birdYaxis =initialHeight-height;
       });
+      if(birdYaxis>1){
+        timer.cancel();
+        gameHasStarted=false;
+      }
     });
   }
   @override
@@ -27,7 +45,13 @@ class _HomePageState extends State<HomePage> {
          Expanded(
              flex: 2,
              child: GestureDetector(
-               onTap:jump,
+               onTap:(){
+                 if(gameHasStarted){
+                   jump();
+                 }else{
+                   startGame();
+                 }
+               },
                child: AnimatedContainer(
                  alignment: Alignment(0,birdYaxis),
            duration: Duration(milliseconds: 0),
@@ -42,8 +66,33 @@ class _HomePageState extends State<HomePage> {
              flex: 1,
              child: Container(
            decoration: BoxDecoration(
-             color: Colors.green
+             color: Colors.brown,
            ),
+               child: Row(
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+                 Column(
+                   children: [
+                     Text("SCORE",style: TextStyle(color: Colors.white),),
+                     SizedBox(
+                       height: 10,
+                     ),
+                     Text("0",style: TextStyle(color: Colors.white),)
+                   ],
+                 ),
+                   Column(
+                   children: [
+                     Text("BEST",style: TextStyle(color: Colors.white),),
+                     SizedBox(
+                       height: 10,
+                     ),
+                     Text("10",style: TextStyle(color: Colors.white),)
+                   ],
+                 )
+                 ]
+                 ,
+               ),
          ))
        ],
      ),
