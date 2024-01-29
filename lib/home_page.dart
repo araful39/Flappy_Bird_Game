@@ -38,15 +38,15 @@ initialHeight=birdYaxis;
       });
 
   setState(() {
-    if(barrierXone < -1.1){
-      barrierXone +=2;
+    if(barrierXone < -2){
+      barrierXone +=3.5;
     }else{
       barrierXone -=0.05;
     }});
 
   setState(() {
-    if(barrierXtwo < -1.1){
-      barrierXtwo +=2;
+    if(barrierXtwo < -2){
+      barrierXtwo +=3.5;
     }else{
       barrierXtwo -=0.05;
     }
